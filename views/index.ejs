@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+  <title>Skapa ditt CV</title>
+</head>
+
+<body>
+    <section id="main">
+        <h1>Skapa ditt CV med formuläret nedan!</h1>
+        <% if(errors.length > 0) { %>
+            <ul>
+            <% errors.forEach(error => { %>
+                <li>
+                    <%= error.message %>
+                </li>
+                <% }); %>
+            </ul>
+            <% }; %>
+
+        <form id="form" method="post">
+            <label for="company">Företag:</label>
+            <input type="text" name="company" id="company">
+            <label for="jTitle">Befattningsroll:</label>
+            <input type="text" name="jTitle" id="jTitle" placeholder="IT-support...">
+            <label for="location">Ort:</label>
+            <input type="text" name="location" id="location">
+            <label for="startdate">Startmånad:</label>
+            <input type="month" id="startdate" name="startdate">
+            <label for="enddate">Slutmånad:</label>
+            <input type="month" id="enddate" name="enddate">
+            <label for="description">Rollbeskrivning:</label>
+            <textarea id="description" name="description" placeholder="Supporterade slutanvändare på kontor och ute i fält med mjukvaru- och hårdvaruproblem"></textarea>
+            <input type="submit" value="Skicka till CV">
+        </form>
+    </section>
+</body>
+
+</html>

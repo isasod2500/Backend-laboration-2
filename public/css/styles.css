@@ -1,0 +1,56 @@
+body {
+    font-family: "Quicksand", sans-serif;
+    background-color: #98baba;
+    color: #242424;
+}
+
+#main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+#form {
+    min-width: 35%;
+    max-width: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    border: lightgoldenrodyellow 2px solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    margin-bottom: 1rem;
+            padding: 12px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+}
+
+input[type=submit] {
+        background-color: #61a463;
+        color: white;
+        padding: 14px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    } input[type=submit]:hover{
+        text-decoration: underline;
+        background-color: #4b814d;
+    }input[type=submit]:active {
+        background-color: #74c476;
+    }
+
+
+    textarea {
+        width: 80%;
+        height: 100px;
+    }
