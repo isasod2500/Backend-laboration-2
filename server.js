@@ -36,7 +36,7 @@ connection.connect((err) => {
 })
 
 
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
     res.json({message: `API Reached`})
 });
 
