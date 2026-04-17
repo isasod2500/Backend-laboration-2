@@ -12,29 +12,27 @@
 <body>
     <section id="main">
         <h1>Skapa ditt CV med formuläret nedan!</h1>
-        <% if(errors.length > 0) { %>
-            <ul>
-            <% errors.forEach(error => { %>
+        <% if(errors.message) { %>
+            <ul> 
                 <li>
-                    <%= error.message %>
+                    <%= errors.details %>
                 </li>
-                <% }); %>
             </ul>
             <% }; %>
 
         <form id="form" method="post">
             <label for="company">Företag:</label>
-            <input type="text" name="company" id="company">
-            <label for="jTitle">Befattningsroll:</label>
-            <input type="text" name="jTitle" id="jTitle" placeholder="IT-support...">
+            <input type="text" name="companyname" id="companyname" value="<%= companyname %>">
+            <label for="jobtitle">Befattningsroll:</label>
+            <input type="text" name="jobtitle" id="jobtitle" placeholder="IT-support..." value="<%= jobtitle %>">
             <label for="location">Ort:</label>
-            <input type="text" name="location" id="location">
-            <label for="startdate">Startmånad:</label>
-            <input type="month" id="startdate" name="startdate">
-            <label for="enddate">Slutmånad:</label>
-            <input type="month" id="enddate" name="enddate">
+            <input type="text" name="location" id="location" value="<%= location %>">
+            <label for="startdate">Startdatum:</label>
+            <input type="date" id="startdate" name="startdate" value="<%= startdate %>">
+            <label for="enddate">Slutdatum:</label>
+            <input type="date" id="enddate" name="enddate" value="<%= enddate %>">
             <label for="description">Rollbeskrivning:</label>
-            <textarea id="description" name="description" placeholder="Supporterade slutanvändare på kontor och ute i fält med mjukvaru- och hårdvaruproblem"></textarea>
+            <textarea id="description" name="description" placeholder="Supporterade slutanvändare på kontor och ute i fält med mjukvaru- och hårdvaruproblem"><%= description %></textarea>
             <input type="submit" value="Skicka till CV">
         </form>
     </section>
