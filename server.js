@@ -28,8 +28,8 @@ const connection = mysql.createConnection({
 });
 
 connection.connect((err) => {
-    if(err) {
-       return console.log(`Connection failed: ${err}`)
+    if (err) {
+        return console.log(`Connection failed: ${err}`)
     }
 
     console.log(`Connected to database`)
@@ -37,41 +37,18 @@ connection.connect((err) => {
 
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    errors: [],
-  })
-});
-
-app.get("/api", (req, res) => {
-    res.json({message: "API reached"});
-});
-
-app.get("/api/cv", (req, res) => {
-      
-    //GET USERS
-    connection.query(`SELECT * FROM workexperience;` , (err, results) => {
-        if(err) {
-            res.status(500).json({error: "Something went wrong: " + err})
-            return;
-        }
-
-        console.log(results)
-        if(results.length === 0) {
-            res.status(200).json({workexperience: []});
-        } else {
-            res.json(results)
-        }
+    res.render("index", {
+        errors: {},
     })
 });
 
+
 app.post("/", (req, res) => {
-    debugger;
-    console.log(req.body)
-    let company = req.body.company;
-    let jTitle = req.body.jTitle; 
+    let companyname = req.body.company;
+    let jobtitle = req.body.jobtitle;
     let location = req.body.location;
-    let start = req.body.startDate;
-    let end = req.body.endDate;
+    let startdate = req.body.startdate;
+    let enddate = req.body.enddate;
     let description = req.body.description;
 
     //Felhantering
@@ -84,62 +61,69 @@ app.post("/", (req, res) => {
         }
     };
 
-    if(!company || !jTitle || !location || !start || !end || !description) {
-        
+    if (!companyname || !jobtitle || !location || !startdate || !enddate || !description) {
+
         errors.message = "Missing information in field";
         errors.details = "Please enter information in all fields"
-        
+
         errors.https_response.message = "Bad Request";
         errors.https_response.code = "400"
 
-
+        res.status(400).json(errors)
     }
 
-    if(errors.length > 0) {
-        res.render("/", {
-            errors: errors,
-            company: company,
-            jTitle: jTitle,
-            location: location,
-            start: start,
-            end: end,
-            description: description,
+    if (!errors.message) {
+        connection.query(`INSERT INTO workexperience(companyname, jobtitle, location, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, location, start, end, description], (err, results) => {
+            
+            
+            if (err) {
+                res.status(500).json({ error: "Something went wrong: " + err })
+                return;
+            }
         });
-    };
-    
-    if(errors.length == 0) {
-        (`INSERT INTO workexperience(company, jTitle, location, start, end, description)VALUES(?, ?, ?, ?, ?, ?)`, [company, jTitle, location, start, end, description]);
-        res.redirect("/")
+        let work = {
+            companyname: companyname,
+            jobtitle: jobtitle,
+            location: location,
+            startdate: startdate,
+            enddate: enddate,
+            description: description,
+        };
     }
 
+});
+/*
 
+app.get("/api", (req, res) => {
+    res.json({ message: "API reached" });
+});
 
-    connection.query(`INSERT INTO users(name, email) VALUES(?, ?, ?, ?, ?, ?)`, [company, jTitle, location, start, end, description], (err, results)=> {
-        if(err) {
-            res.status(500).json({error: "Something went wrong: " + err})
+app.get("/api/cv", (req, res) => {
+
+    //GET USERS
+    connection.query(`SELECT * FROM workexperience;`, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: "Something went wrong: " + err })
             return;
         }
 
-        console.log(`Query made ${results}`);
-
-            
-    let user = {
-        name: name,
-        email: email
-    };
-
-    res.json({message: "User added", user});
-    });
-
+        console.log(results)
+        if (results.length === 0) {
+            res.status(200).json({ workexperience: [] });
+        } else {
+            res.json(results)
+        }
+    })
 });
 
 app.put("/api/cv/:id", (req, res) => {
-    res.json({message: "User(s) updated: " + req.params.id});
+    res.json({ message: "User(s) updated: " + req.params.id });
 });
 
 app.delete("/api/cv/:id", (req, res) => {
-    res.json({message: "User(s) deleted: " + req.params.id});
+    res.json({ message: "User(s) deleted: " + req.params.id });
 });
+*/
 
 app.listen(port, () => {
     console.log(`Anslutning startad på port: ${port}`)
