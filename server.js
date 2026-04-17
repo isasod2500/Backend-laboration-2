@@ -36,14 +36,30 @@ connection.connect((err) => {
 })
 
 
-app.get("/", (req, res) => {
-    res.render("index", {
-        errors: {},
+app.get("/api", (req, res) => {
+    res.json({message: `API Reached`})
+});
+
+app.get("/api/workexperience", (req, res) => {
+
+    //GET USERS
+    connection.query(`SELECT * FROM workexperience;`, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: "Something went wrong: " + err })
+            return;
+        }
+
+        console.log(results)
+        if (results.length === 0) {
+            res.status(200).json({ workexperience: [] });
+        } else {
+            res.json(results)
+        }
     })
 });
 
 
-app.post("/", (req, res) => {
+app.post("/api/workexperience", (req, res) => {
     let companyname = req.body.company;
     let jobtitle = req.body.jobtitle;
     let location = req.body.location;
@@ -91,30 +107,13 @@ app.post("/", (req, res) => {
         };
     }
 
+    res.json({message: `Workexperience added`})
 });
 /*
 
-app.get("/api", (req, res) => {
-    res.json({ message: "API reached" });
-});
 
-app.get("/api/cv", (req, res) => {
 
-    //GET USERS
-    connection.query(`SELECT * FROM workexperience;`, (err, results) => {
-        if (err) {
-            res.status(500).json({ error: "Something went wrong: " + err })
-            return;
-        }
 
-        console.log(results)
-        if (results.length === 0) {
-            res.status(200).json({ workexperience: [] });
-        } else {
-            res.json(results)
-        }
-    })
-});
 
 app.put("/api/cv/:id", (req, res) => {
     res.json({ message: "User(s) updated: " + req.params.id });
