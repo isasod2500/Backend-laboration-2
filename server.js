@@ -60,7 +60,7 @@ app.get("/api/workexperience", (req, res) => {
 
 
 app.post("/api/workexperience", (req, res) => {
-    let companyname = req.body.company;
+    let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
     let location = req.body.location;
     let startdate = req.body.startdate;
