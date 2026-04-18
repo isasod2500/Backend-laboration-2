@@ -83,20 +83,22 @@ app.post("/api/workexperience", (req, res) => {
         errors.details = "Please enter information in all fields"
 
         errors.https_response.message = "Bad Request";
-        errors.https_response.code = "400"
+        errors.https_response.code = 400
 
-        res.status(400).json(errors)
+        return res.status(400).json(errors)
     }
 
     if (!errors.message) {
-        connection.query(`INSERT INTO workexperience(companyname, jobtitle, location, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, location, start, end, description], (err, results) => {
+        connection.query(`INSERT INTO workexperience(companyname, jobtitle, location, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, location, startdate, enddate, description], (err, results) => {
             
             
             if (err) {
                 res.status(500).json({ error: "Something went wrong: " + err })
                 return;
             }
+            res.json({message: `Workexperience added`})
         });
+        
         let work = {
             companyname: companyname,
             jobtitle: jobtitle,
@@ -104,10 +106,8 @@ app.post("/api/workexperience", (req, res) => {
             startdate: startdate,
             enddate: enddate,
             description: description,
-        };
+        };  
     }
-
-    res.json({message: `Workexperience added`})
 });
 /*
 
