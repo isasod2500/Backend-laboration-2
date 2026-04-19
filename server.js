@@ -109,20 +109,38 @@ app.post("/api/workexperience", (req, res) => {
         };  
     }
 });
-/*
-
-
 
 
 
 app.put("/api/cv/:id", (req, res) => {
+    let companyname = req.body.companyname;
+    let jobtitle = req.body.jobtitle;
+    let location = req.body.location;
+    let startdate = req.body.startdate;
+    let enddate = req.body.enddate;
+    let description = req.body.description;
+
+    connection.query(`UPDATE workexperience
+    SET companyname = ?, jobtitle = ?, location = ?, startdate = ?, enddate = ?, description = ?
+    WHERE id = ?`, [companyname, jobtitle, location, startdate, enddate, description, req.params.id], (err, results) => {
+        if (err) {
+                res.status(500).json({ error: "Something went wrong: " + err })
+                return;
+            }
     res.json({ message: "User(s) updated: " + req.params.id });
-});
+    });
+})
 
 app.delete("/api/cv/:id", (req, res) => {
-    res.json({ message: "User(s) deleted: " + req.params.id });
-});
-*/
+    connection.query(`DELETE FROM workexperience WHERE id = ?`, [req.params.id], (err, results) => {
+        if (err) {
+                res.status(500).json({ error: "Something went wrong: " + err })
+                return;
+            }
+    return res.json({ message: "User deleted: " + req.params.id });
+        })
+})
+
 
 app.listen(port, () => {
     console.log(`Anslutning startad på port: ${port}`)
