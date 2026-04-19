@@ -95,7 +95,7 @@ app.post("/api/workexperience", (req, res) => {
                 return;
             }
 
-            return res.status(201)({ message: `Workexperience added` })
+            return res.status(201).json({ message: `Workexperience added` })
         });
         
         let work = {
