@@ -37,7 +37,7 @@ connection.connect((err) => {
 
 
 app.get("/", (req, res) => {
-    res.json({message: `API Reached`})
+    res.json({ message: `API Reached` })
 });
 
 app.get("/api/workexperience", (req, res) => {
@@ -62,7 +62,7 @@ app.get("/api/workexperience", (req, res) => {
 app.post("/api/workexperience", (req, res) => {
     let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
-    let location = req.body.location;
+    let jobLocation = req.body.jobLocation;
     let startdate = req.body.startdate;
     let enddate = req.body.enddate;
     let description = req.body.description;
@@ -77,7 +77,7 @@ app.post("/api/workexperience", (req, res) => {
         }
     };
 
-    if (!companyname || !jobtitle || !location || !startdate || !enddate || !description) {
+    if (!companyname || !jobtitle || !jobLocation || !startdate || !enddate || !description) {
 
         errors.message = "Missing information in field";
         errors.details = "Please enter information in all fields"
@@ -89,66 +89,73 @@ app.post("/api/workexperience", (req, res) => {
     }
 
     if (!errors.message) {
-        connection.query(`INSERT INTO workexperience(companyname, jobtitle, location, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, location, startdate, enddate, description], (err, results) => {
-            
-            
+        connection.query(`INSERT INTO workexperience(companyname, jobtitle, jobLocation, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, jobLocation, startdate, enddate, description], (err, results) => {
+
+
             if (err) {
                 res.status(500).json({ error: "Something went wrong: " + err })
                 return;
             }
-            res.json({message: `Workexperience added`})
+
+            return res.status(201)({ message: `Workexperience added` })
         });
         
         let work = {
             companyname: companyname,
             jobtitle: jobtitle,
-            location: location,
+            jobLocation: jobLocation,
             startdate: startdate,
             enddate: enddate,
             description: description,
-        };  
+        };
+
+
     }
+
+
 });
 
-app.get("/api/workexperience/:id", (req, res) => {
-    connection.query(
-        "SELECT * FROM workexperience WHERE id = ?",
-        [req.params.id],
-        (err, results) => {
-            if (err) return res.status(500).json(err);
-            res.json(results[0]);
-        }
-    );
-});
 
 app.put("/api/workexperience/:id", (req, res) => {
     let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
-    let location = req.body.location;
+    let jobLocation = req.body.jobLocation;
     let startdate = req.body.startdate;
     let enddate = req.body.enddate;
     let description = req.body.description;
-
-    connection.query(`UPDATE workexperience
-    SET companyname = ?, jobtitle = ?, location = ?, startdate = ?, enddate = ?, description = ?
-    WHERE id = ?`, [companyname, jobtitle, location, startdate, enddate, description, req.params.id], (err, results) => {
-        if (err) {
-                res.status(500).json({ error: "Something went wrong: " + err })
-                return;
+    let id = req.params.id
+    connection.query(
+        `UPDATE workexperience
+    SET companyname = ?, jobtitle = ?, jobLocation = ?, startdate = ?, enddate = ?, description = ?
+    WHERE ID = ?`, [companyname, jobtitle, jobLocation, startdate, enddate, description, id],
+        (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: `Something went wrong: ${err}` })
             }
-    res.json({ message: "User(s) updated: " + req.params.id });
-    });
-})
+
+            return res.json({ message: "Entries updated: " + req.params.id + ", " + req.body.jobtitle + " på " + req.body.companyname });
+        });
+
+   
+});
 
 app.delete("/api/workexperience/:id", (req, res) => {
-    connection.query(`DELETE FROM workexperience WHERE id = ?`, [req.params.id], (err, results) => {
-        if (err) {
-                res.status(500).json({ error: "Something went wrong: " + err })
-                return;
+    const id = req.params.id
+    connection.query(
+        `DELETE FROM workexperience WHERE id = ?`, [id],
+        (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: `Something went wrong: ${err}` })
             }
-    return res.json({ message: "User deleted: " + req.params.id });
-        })
-})
+            return res.json({
+                message: "User deleted",
+                id: id,
+                affectedRows: results.affectedRows
+            });
+        }
+    )
+
+});
 
 
 app.listen(port, () => {
