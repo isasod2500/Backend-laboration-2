@@ -112,7 +112,7 @@ app.post("/api/workexperience", (req, res) => {
 
 
 
-app.put("/api/cv/:id", (req, res) => {
+app.put("/api/workexperience/:id", (req, res) => {
     let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
     let location = req.body.location;
@@ -131,7 +131,7 @@ app.put("/api/cv/:id", (req, res) => {
     });
 })
 
-app.delete("/api/cv/:id", (req, res) => {
+app.delete("/api/workexperience/:id", (req, res) => {
     connection.query(`DELETE FROM workexperience WHERE id = ?`, [req.params.id], (err, results) => {
         if (err) {
                 res.status(500).json({ error: "Something went wrong: " + err })
