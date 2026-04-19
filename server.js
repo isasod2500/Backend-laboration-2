@@ -83,7 +83,7 @@ app.post("/api/workexperience", (req, res) => {
         errors.details = "Please enter information in all fields"
 
         errors.https_response.message = "Bad Request";
-        errors.https_response.code = "400"
+        errors.https_response.code = 400
 
         return res.status(400).json(errors)
     }
@@ -99,6 +99,7 @@ app.post("/api/workexperience", (req, res) => {
 
             return res.status(201)({ message: `Workexperience added` })
         });
+        
         let work = {
             companyname: companyname,
             jobtitle: jobtitle,
