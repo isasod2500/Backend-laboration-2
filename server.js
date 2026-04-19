@@ -62,7 +62,7 @@ app.get("/api/workexperience", (req, res) => {
 app.post("/api/workexperience", (req, res) => {
     let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
-    let location = req.body.location;
+    let jobLocation = req.body.jobLocation;
     let startdate = req.body.startdate;
     let enddate = req.body.enddate;
     let description = req.body.description;
@@ -77,7 +77,7 @@ app.post("/api/workexperience", (req, res) => {
         }
     };
 
-    if (!companyname || !jobtitle || !location || !startdate || !enddate || !description) {
+    if (!companyname || !jobtitle || !jobLocation || !startdate || !enddate || !description) {
 
         errors.message = "Missing information in field";
         errors.details = "Please enter information in all fields"
@@ -89,7 +89,7 @@ app.post("/api/workexperience", (req, res) => {
     }
 
     if (!errors.message) {
-        connection.query(`INSERT INTO workexperience(companyname, jobtitle, location, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, location, startdate, enddate, description], (err, results) => {
+        connection.query(`INSERT INTO workexperience(companyname, jobtitle, jobLocation, startdate, enddate, description)VALUES(?, ?, ?, ?, ?, ?)`, [companyname, jobtitle, jobLocation, startdate, enddate, description], (err, results) => {
 
 
             if (err) {
@@ -102,7 +102,7 @@ app.post("/api/workexperience", (req, res) => {
         let work = {
             companyname: companyname,
             jobtitle: jobtitle,
-            location: location,
+            jobLocation: jobLocation,
             startdate: startdate,
             enddate: enddate,
             description: description,
@@ -115,18 +115,18 @@ app.post("/api/workexperience", (req, res) => {
 });
 
 
-app.put("/api/cv/:id", (req, res) => {
+app.put("/api/workexperience/:id", (req, res) => {
     let companyname = req.body.companyname;
     let jobtitle = req.body.jobtitle;
-    let location = req.body.location;
+    let jobLocation = req.body.jobLocation;
     let startdate = req.body.startdate;
     let enddate = req.body.enddate;
     let description = req.body.description;
     let id = req.params.id
     connection.query(
         `UPDATE workexperience
-    SET companyname = ?, jobtitle = ?, location = ?, startdate = ?, enddate = ?, description = ?
-    WHERE ID = ?`, [companyname, jobtitle, location, startdate, enddate, description, id],
+    SET companyname = ?, jobtitle = ?, jobLocation = ?, startdate = ?, enddate = ?, description = ?
+    WHERE ID = ?`, [companyname, jobtitle, jobLocation, startdate, enddate, description, id],
         (err, results) => {
             if (err) {
                 return res.status(500).json({ error: `Something went wrong: ${err}` })
@@ -138,8 +138,8 @@ app.put("/api/cv/:id", (req, res) => {
    
 });
 
-app.delete("/api/cv/:id", (req, res) => {
-    let id = req.params.id
+app.delete("/api/workexperience/:id", (req, res) => {
+    const id = req.params.id
     connection.query(
         `DELETE FROM workexperience WHERE id = ?`, [id],
         (err, results) => {
