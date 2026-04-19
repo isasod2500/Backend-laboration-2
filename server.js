@@ -13,6 +13,12 @@ app.use(cors());
 app.use(bodyParser.json())
 
 
+app.use(cors({
+    origin: 'https://lab2frontend.netlify.app/',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+});
+
 
 const port = process.env.PORT || 3000;
 
