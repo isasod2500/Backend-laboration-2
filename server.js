@@ -110,7 +110,16 @@ app.post("/api/workexperience", (req, res) => {
     }
 });
 
-
+app.get("/api/workexperience/:id", (req, res) => {
+    connection.query(
+        "SELECT * FROM workexperience WHERE id = ?",
+        [req.params.id],
+        (err, results) => {
+            if (err) return res.status(500).json(err);
+            res.json(results[0]);
+        }
+    );
+});
 
 app.put("/api/workexperience/:id", (req, res) => {
     let companyname = req.body.companyname;
